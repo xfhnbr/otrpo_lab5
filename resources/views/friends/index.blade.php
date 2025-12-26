@@ -124,7 +124,6 @@
             @else
                 <div class="row">
                     <div class="col-md-8">
-                        <!-- Лента активности друзей -->
                         <div class="card mb-4">
                             <div class="card-header text-white" style="background-color: #94a364 !important;">
                                 <h5 class="mb-0">
@@ -210,7 +209,6 @@
                     </div>
                     
                     <div class="col-md-4">
-                        <!-- Список друзей -->
                         <div class="card">
                             <div class="card-header bg-secondary text-white">
                                 <h5 class="mb-0">
