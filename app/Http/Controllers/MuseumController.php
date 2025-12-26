@@ -16,10 +16,11 @@ class MuseumController extends Controller
     public function index(Request $request, $identifier = null)
     {
         $user = null;
+        $isAdmin = auth()->check() && auth()->user()->is_admin;
         
-        // Если передан identifier в URL (/users/{identifier}/museums)
+        // если передан identifier в URL (/users/{identifier}/museums)
         if ($identifier) {
-            // Определяем, это ID или имя
+            // определяем, это ID или имя
             if (is_numeric($identifier)) {
                 $user = User::findOrFail($identifier);
             } else {
@@ -27,23 +28,34 @@ class MuseumController extends Controller
             }
             
             $museums = Museum::where('user_id', $user->id)
+                            ->when($isAdmin, function ($query) {
+                                return $query->withTrashed();
+                            })
                             ->orderBy('id', 'asc')
                             ->get();
             
             return view('museums.index', compact('museums', 'user'));
         }
         
-        // Если передан user_id в query string (?user_id=...)
+        // если передан user_id в query string
         $user_id = $request->get('user_id');
         if ($user_id) {
             $user = User::findOrFail($user_id);
             $museums = Museum::where('user_id', $user_id)
+                            ->when($isAdmin, function ($query) {
+                                return $query->withTrashed();
+                            })
                             ->orderBy('id', 'asc')
                             ->get();
             return view('museums.index', compact('museums', 'user'));
         }
         
-        $museums = Museum::orderBy('id', 'asc')->get();
+        $museums = Museum::when($isAdmin, function ($query) {
+                            return $query->withTrashed();
+                        })
+                        ->orderBy('id', 'asc')
+                        ->get();
+        
         return view('museums.index', compact('museums'));
     }
 
@@ -215,8 +227,16 @@ class MuseumController extends Controller
 		
 		$museum->delete();
 		
-		return redirect()->route('museums.index')
-			->with('success', 'Музей «' . $museum->name_ru . '» перемещен в корзину!');
+		$isAdmin = auth()->check() && auth()->user()->is_admin;
+    
+        if ($isAdmin) {
+            $message = 'Музей «' . $museum->name_ru . '» перемещен в корзину';
+        } else {
+            $message = 'Музей «' . $museum->name_ru . '» удален';
+        }
+        
+        return redirect()->route('museums.index')
+            ->with('success', $message);
 	}
 	
 	public function restore($id)
