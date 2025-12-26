@@ -5,6 +5,7 @@ use App\Http\Controllers\MuseumController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExhibitController;
+use App\Http\Controllers\FriendController;
 
 // просмотр всех музеев
 Route::get('/', [MuseumController::class, 'index'])->name('home');
@@ -80,5 +81,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('museums.exhibits.destroy');
 });
 
-
+// Маршруты для друзей
+Route::middleware(['auth'])->group(function () {
+    Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
+    
+    Route::post('/friends/{user}/add', [FriendController::class, 'addFriend'])->name('friends.add');
+    Route::post('/friends/{user}/remove', [FriendController::class, 'removeFriend'])->name('friends.remove');
+});
 require __DIR__.'/auth.php';

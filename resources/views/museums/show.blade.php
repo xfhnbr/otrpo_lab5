@@ -46,6 +46,12 @@
                                     <span>Все пользователи</span>
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('friends.index') }}">
+                                    <i class="fas fa-user-friends me-3" style="width: 20px; text-align: center;"></i>
+                                    <span>Друзья</span>
+                                </a>
+                            </li>
                             @if(auth()->user()->is_admin)
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('museums.trash') }}">
@@ -84,7 +90,7 @@
                 @endauth
             </div>
         </div>
-    </nav>  
+    </nav>
         
     <main>
         <div class="container mt-4">

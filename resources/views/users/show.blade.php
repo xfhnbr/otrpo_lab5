@@ -46,6 +46,12 @@
                                     <span>Все пользователи</span>
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('friends.index') }}">
+                                    <i class="fas fa-user-friends me-3" style="width: 20px; text-align: center;"></i>
+                                    <span>Друзья</span>
+                                </a>
+                            </li>
                             @if(auth()->user()->is_admin)
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('museums.trash') }}">
@@ -171,6 +177,27 @@
                                 <strong>Музеев создано:</strong>
                                 <span class="badge badge-museums-count">{{ $user->museums_count }}</span>
                             </p>
+                            @auth
+                                @if(auth()->id() !== $user->id)
+                                    <div class="mt-4">
+                                        @if(auth()->user()->isFriendWith($user))
+                                            <form action="{{ route('friends.remove', $user) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fas fa-user-minus"></i> Удалить из друзей
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('friends.add', $user) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fas fa-user-plus"></i> Добавить в друзья
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                @endif
+                            @endauth
                         </div>
                     </div>
                 </div>
