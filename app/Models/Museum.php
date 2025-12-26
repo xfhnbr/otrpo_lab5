@@ -66,11 +66,6 @@ class Museum extends Model
             }
         });
     }
-	
-    public function popovers()
-    {
-        return $this->hasMany(Popover::class)->orderBy('position');
-    }
 
     public function getImageUrlAttribute()
     {
@@ -161,21 +156,6 @@ class Museum extends Model
         }
         
         $description = $this->detailed_description;
-        
-        foreach ($this->popovers as $popover) {
-            $replace = sprintf(
-                '<span class="text-primary" 
-                       data-bs-toggle="popover" 
-                       data-bs-trigger="hover" 
-                       data-bs-title="%s" 
-                       data-bs-content="%s">%s</span>',
-                e($popover->title),
-                e($popover->content),
-                e($popover->target_text)
-            );
-            
-            $description = str_replace($popover->target_text, $replace, $description);
-        }
         
         return $description;
     }

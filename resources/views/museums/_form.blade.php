@@ -46,7 +46,7 @@
             <textarea class="form-control @error('detailed_description') is-invalid @enderror" 
                       id="detailed_description" name="detailed_description" rows="8" 
                       required>{{ old('detailed_description', $museum->detailed_description ?? '') }}</textarea>
-            <div class="form-text">Полное описание музея. Для popovers используйте квадратные скобки: [текст для popover]</div>
+            <div class="form-text">Полное описание музея.</div>
             @error('detailed_description')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror

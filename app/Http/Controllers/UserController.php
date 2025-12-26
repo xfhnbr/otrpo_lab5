@@ -26,7 +26,6 @@ class UserController extends Controller
         
         $museums = $user->museums()
             ->whereNull('deleted_at')
-            ->with('popovers')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
             

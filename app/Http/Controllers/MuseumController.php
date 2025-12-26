@@ -27,7 +27,6 @@ class MuseumController extends Controller
             }
             
             $museums = Museum::where('user_id', $user->id)
-                            ->with('popovers')
                             ->orderBy('id', 'asc')
                             ->get();
             
@@ -39,13 +38,12 @@ class MuseumController extends Controller
         if ($user_id) {
             $user = User::findOrFail($user_id);
             $museums = Museum::where('user_id', $user_id)
-                            ->with('popovers')
                             ->orderBy('id', 'asc')
                             ->get();
             return view('museums.index', compact('museums', 'user'));
         }
         
-        $museums = Museum::with('popovers')->orderBy('id', 'asc')->get();
+        $museums = Museum::orderBy('id', 'asc')->get();
         return view('museums.index', compact('museums'));
     }
 
@@ -59,13 +57,11 @@ class MuseumController extends Controller
         if ($isAdmin) {
             $museums = Museum::withTrashed()
                 ->where('user_id', $user->id)
-                ->with('popovers')
                 ->orderBy('deleted_at', 'asc')
                 ->orderBy('id', 'asc')
                 ->get();
         } else {
             $museums = Museum::where('user_id', $user->id)
-                ->with('popovers')
                 ->orderBy('id', 'asc')
                 ->get();
         }
@@ -133,7 +129,6 @@ class MuseumController extends Controller
             abort(404, 'Музей был удален');
         }
 
-        $museum->load('popovers');
         return view('museums.show', compact('museum'));
     }
 
@@ -259,8 +254,6 @@ class MuseumController extends Controller
             }
         }
         
-        $museum->popovers()->delete();
-        
         $museum->forceDelete();
         
         return redirect()->route('museums.trash')
@@ -274,7 +267,6 @@ class MuseumController extends Controller
         }
 
 		$museums = Museum::onlyTrashed()
-			->with('popovers')
 			->orderBy('deleted_at', 'desc')
 			->get();
 			
@@ -299,8 +291,6 @@ class MuseumController extends Controller
 					Storage::disk('public')->delete($path);
 				}
 			}
-			
-			$museum->popovers()->delete();
 			
 			$museum->forceDelete();
 			$deletedCount++;
