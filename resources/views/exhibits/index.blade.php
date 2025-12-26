@@ -50,7 +50,19 @@
                 <div class="row">
                     @foreach($exhibits as $exhibit)
                         <div class="col-md-4 mb-4">
-                            <div class="card h-100 shadow-sm">
+                            <div class="card h-100 shadow-sm position-relative 
+                                @if(auth()->check() && $exhibit->user && $exhibit->user->isFriendOfCurrentUser())
+                                    friend-highlight
+                                @endif">
+                                
+                                @if(auth()->check() && $exhibit->user && $exhibit->user->isFriendOfCurrentUser())
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge friend-badge" title="Добавлено другом">
+                                            <i class="fas fa-user-friends"></i> Друг
+                                        </span>
+                                    </div>
+                                @endif
+                                
                                 @if($exhibit->image_filename)
                                     <img src="{{ $exhibit->image_url }}" 
                                          class="card-img-top" 
@@ -58,11 +70,20 @@
                                          style="height: 200px; object-fit: cover;">
                                 @endif
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $exhibit->name }}</h5>
+                                    <h5 class="card-title d-flex align-items-center">
+                                        {{ $exhibit->name }}
+                                        @if(auth()->check() && $exhibit->user && $exhibit->user->isFriendOfCurrentUser())
+                                            <i class="fas fa-user-friends friend-icon ms-2" title="Добавлено другом"></i>
+                                        @endif
+                                    </h5>
                                     <p class="text-muted small mb-0">
                                         Добавлено: {{ $exhibit->created_at->format('d.m.Y') }}
                                         @if($exhibit->user)
-                                            пользователем {{ $exhibit->user->name }}
+                                            пользователем 
+                                            <a href="{{ route('users.show', $exhibit->user->name) }}" 
+                                               class="@if(auth()->check() && $exhibit->user->isFriendOfCurrentUser()) friend-name @endif">
+                                                {{ $exhibit->user->name }}
+                                            </a>
                                         @endif
                                     </p>
                                 </div>
@@ -75,6 +96,7 @@
                                             </a>
                                             <form action="{{ route('museums.exhibits.destroy', [$museum, $exhibit]) }}" 
                                                   method="POST" 
+                                                  class="d-inline"
                                                   onsubmit="return confirm('Удалить экспонат «{{ $exhibit->name }}»?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -96,6 +118,7 @@
             @endif
         </div>
     </main>
+
 
     <footer class="mt-5">
         <div class="container footer">

@@ -172,11 +172,6 @@
                                 <strong>Последнее обновление:</strong>
                                 <span class="user-update-date">{{ $user->updated_at->format('d.m.Y H:i') }}</span>
                             </p>
-                            <p class="user-info-item">
-                                <i class="fas fa-museum info-icon"></i> 
-                                <strong>Музеев создано:</strong>
-                                <span class="badge badge-museums-count">{{ $user->museums_count }}</span>
-                            </p>
                             @auth
                                 @if(auth()->id() !== $user->id)
                                     <div class="mt-4">

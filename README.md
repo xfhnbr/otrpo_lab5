@@ -10,8 +10,9 @@
 7.	Выполните php artisan storage:link
 8. 	Для сборки используйте npm run build или npm run dev
 9.	Запустите сервер через php artisan serve
-10.	Для добавления стандартных изображений на сайт необходимо скачать их с https://disk.360.yandex.ru/d/hhJ94-gggDIZ-Q и поместить каталог \public\storage. Должно получиться: \public\storage\museums\museum_1.jpg и т.д.
+10.	Для добавления стандартных изображений на сайт необходимо скачать их с https://disk.360.yandex.ru/d/B3KzowKa9rT5yw и поместить каталог \public\storage. Должно получиться: \public\storage\museums\museum_1.jpg и \public\storage\exhibits\exhibit_1.jpg и т.д.
 
-По умолчанию будут созданы 2 пользователя:
+По умолчанию будут созданы 3 пользователя:
 1. Admin (email: admin@example.com, password: password)
-2. User (email: user@example.com, password:password)
+2. User (email: user@example.com, password: password)
+3. User2 (email: user2@example.com, password: password)

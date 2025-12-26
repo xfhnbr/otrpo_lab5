@@ -168,4 +168,12 @@ class User extends Authenticatable
             ->get();
     }
 
+    public function isFriendOfCurrentUser()
+    {
+        if (!auth()->check()) {
+            return false;
+        }
+        
+        return auth()->user()->isFriendWith($this);
+    }
 }

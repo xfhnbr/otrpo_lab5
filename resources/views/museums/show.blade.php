@@ -127,6 +127,76 @@
                             {!! $museum->formatted_description !!}
                         </div>
                     </div>
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header text-white" style="background-color: #94a364;">
+                                    <h4 class="mb-0">
+                                        <i class="fas fa-images"></i> Экспонаты этого музея
+                                        @if($museum->exhibits()->count() > 0)
+                                            <span class="badge bg-light text-dark ms-2">{{ $museum->exhibits()->count() }}</span>
+                                        @endif
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    @if($museum->exhibits->isEmpty())
+                                        <p class="text-muted">В этом музее пока нет экспонатов.</p>
+                                    @else
+                                        <div class="row">
+                                            @foreach($museum->exhibits->take(6) as $exhibit)
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="card h-100 
+                                                        @if(auth()->check() && $exhibit->user && $exhibit->user->isFriendOfCurrentUser())
+                                                            friend-highlight
+                                                        @endif">
+                                                        
+                                                        @if(auth()->check() && $exhibit->user && $exhibit->user->isFriendOfCurrentUser())
+                                                            <div class="position-absolute top-0 end-0 m-2">
+                                                                <span class="badge friend-badge" title="Добавлено другом">
+                                                                    <i class="fas fa-user-friends"></i>
+                                                                </span>
+                                                            </div>
+                                                        @endif
+                                                        
+                                                        @if($exhibit->image_filename)
+                                                            <img src="{{ $exhibit->image_url }}" 
+                                                                class="card-img-top" 
+                                                                alt="{{ $exhibit->name }}"
+                                                                style="height: 150px; object-fit: cover;">
+                                                        @endif
+                                                        <div class="card-body">
+                                                            <h6 class="card-title d-flex align-items-center">
+                                                                {{ $exhibit->name }}
+                                                                @if(auth()->check() && $exhibit->user && $exhibit->user->isFriendOfCurrentUser())
+                                                                    <i class="fas fa-user-friends friend-icon ms-1" title="Добавлено другом"></i>
+                                                                @endif
+                                                            </h6>
+                                                            <p class="small text-muted mb-0">
+                                                                Добавил: 
+                                                                @if($exhibit->user)
+                                                                    <span class="@if(auth()->check() && $exhibit->user->isFriendOfCurrentUser()) friend-name @endif">
+                                                                        {{ $exhibit->user->name }}
+                                                                    </span>
+                                                                @endif
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        
+                                        @if($museum->exhibits->count() > 6)
+                                            <div class="text-center mt-3">
+                                                <a href="{{ route('museums.exhibits.index', $museum) }}" class="btn btn-outline-primary">
+                                                    <i class="fas fa-list"></i> Показать все экспонаты ({{ $museum->exhibits->count() }})
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="col-md-4">
