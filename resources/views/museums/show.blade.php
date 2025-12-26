@@ -159,6 +159,15 @@
                                     </a>
                                 @endcan
                                 
+                                @auth
+                                    <a href="{{ route('museums.exhibits.create', $museum) }}" class="btn btn-success w-100">
+                                        <i class="fas fa-plus"></i> Добавить экспонат
+                                    </a>
+                                    <a href="{{ route('museums.exhibits.index', $museum) }}" class="btn btn-info w-100">
+                                        <i class="fas fa-list"></i> Показать все экспонаты
+                                    </a>
+                                @endauth
+                                
                                 @if(!$museum->trashed())
                                     @can('delete-museum', $museum)
                                         <form action="{{ route('museums.destroy', $museum) }}" method="POST" 

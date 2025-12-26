@@ -99,6 +99,11 @@ class User extends Authenticatable
         return $this->hasMany(Museum::class);
     }
 
+    public function exhibits()
+    {
+        return $this->hasMany(Exhibit::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->is_admin === true;

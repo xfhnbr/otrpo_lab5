@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MuseumController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExhibitController;
 
 // просмотр всех музеев
 Route::get('/', [MuseumController::class, 'index'])->name('home');
@@ -56,6 +57,28 @@ Route::middleware('auth')->group(function () {
 // просмотр музея
 Route::get('/museums/{id}', [MuseumController::class, 'show'])
     ->name('museums.show')
-    ->where('id', '[0-9]+');    
+    ->where('id', '[0-9]+');
+
+// Маршруты для экспонатов
+Route::middleware(['auth'])->group(function () {
+    Route::get('/museums/{museum}/exhibits', [ExhibitController::class, 'index'])
+        ->name('museums.exhibits.index');
+    
+    Route::get('/museums/{museum}/exhibits/create', [ExhibitController::class, 'create'])
+        ->name('museums.exhibits.create');
+    
+    Route::post('/museums/{museum}/exhibits', [ExhibitController::class, 'store'])
+        ->name('museums.exhibits.store');
+    
+    Route::get('/museums/{museum}/exhibits/{exhibit}/edit', [ExhibitController::class, 'edit'])
+        ->name('museums.exhibits.edit');
+    
+    Route::put('/museums/{museum}/exhibits/{exhibit}', [ExhibitController::class, 'update'])
+        ->name('museums.exhibits.update');
+    
+    Route::delete('/museums/{museum}/exhibits/{exhibit}', [ExhibitController::class, 'destroy'])
+        ->name('museums.exhibits.destroy');
+});
+
 
 require __DIR__.'/auth.php';

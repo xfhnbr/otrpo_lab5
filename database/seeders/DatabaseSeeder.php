@@ -26,5 +26,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AssignMuseumsToUsersSeeder::class,
         ]);
+
+        $this->call([
+            ExhibitSeeder::class,
+        ]);
     }
 }

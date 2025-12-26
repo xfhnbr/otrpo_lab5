@@ -160,6 +160,11 @@ class Museum extends Model
         return $description;
     }
 
+    public function exhibits()
+    {
+        return $this->hasMany(Exhibit::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
